@@ -1,9 +1,9 @@
 @import "tailwindcss";
 @import "@heroui/styles";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* Correct Tailwind v4 class-based dark mode configuration */
+@variant dark (&:where(.dark, .dark *));
 
-/* Map your Google fonts to clean Tailwind v4 utility keys */
 @theme {
   --font-heading: var(--font-kanit);
   --font-body: var(--font-inter);
