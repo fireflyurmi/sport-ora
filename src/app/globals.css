@@ -8,3 +8,16 @@
   --font-heading: var(--font-kanit);
   --font-body: var(--font-inter);
 }
+
+@keyframes serverFloat {
+  0%, 100% {
+    transform: translateY(-12px);
+  }
+  50% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-server-float {
+  animation: serverFloat 4s ease-in-out infinite;
+}

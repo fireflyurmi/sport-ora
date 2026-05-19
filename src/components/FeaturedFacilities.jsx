@@ -1,22 +1,4 @@
-"use client";
-
-import React from "react";
-import { motion } from "framer-motion";
 import Image from "next/image";
-
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { staggerChildren: 0.1 } },
-};
-
-const cardVariants = {
-  hidden: { opacity: 0, y: 30 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 15 },
-  },
-};
 
 export default function FeaturedFacilities() {
   return (
@@ -28,19 +10,9 @@ export default function FeaturedFacilities() {
         <div className="mt-2 h-1 w-12 rounded-full bg-blue-600" />
       </div>
 
-      <motion.div
-        className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3"
-        variants={containerVariants}
-        initial="hidden"
-        whileInView="visible"
-        viewport={{ once: true, margin: "-100px" }}
-      >
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
         {/* Card 1 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1529900748604-07564a03e7a6?auto=format&fit=crop&w=600&q=80"
@@ -71,14 +43,10 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Card 2 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1626224583764-f87db24ac4ea?auto=format&fit=crop&w=600&q=80"
@@ -109,14 +77,10 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Card 3 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1576013551627-0cc20b96c2a7?auto=format&fit=crop&w=600&q=80"
@@ -147,14 +111,10 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Card 4 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1595435934249-5df7ed86e1c0?auto=format&fit=crop&w=600&q=80"
@@ -185,14 +145,10 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Card 5 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=600&q=80"
@@ -223,14 +179,10 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
+        </div>
 
         {/* Card 6 */}
-        <motion.div
-          variants={cardVariants}
-          whileHover={{ y: -6 }}
-          className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34]"
-        >
+        <div className="group overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5">
           <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
             <Image
               src="https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&w=600&q=80"
@@ -261,8 +213,8 @@ export default function FeaturedFacilities() {
               </button>
             </div>
           </div>
-        </motion.div>
-      </motion.div>
+        </div>
+      </div>
     </section>
   );
 }

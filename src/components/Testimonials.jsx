@@ -9,7 +9,6 @@ export default function Testimonials() {
 
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Section Header */}
       <div className="mb-8 text-center">
         <h2 className="font-heading text-xl font-black tracking-tight text-slate-800 sm:text-2xl dark:text-white">
           User Testimonials
@@ -17,11 +16,10 @@ export default function Testimonials() {
         <div className="mx-auto mt-1.5 h-0.75 w-8 rounded-full bg-blue-600" />
       </div>
 
-      {/* Main Review Outer Bubble Box */}
       <div className="mx-auto max-w-4xl rounded-3xl border border-slate-100 bg-white p-6 shadow-sm sm:p-8 dark:border-slate-800/80 dark:bg-[#0D1527]">
         <div className="flex min-h-25 w-full items-center">
           <AnimatePresence mode="wait">
-            {/* Condition Panel 1 */}
+        
             {active === 0 && (
               <motion.div
                 key="t1"
@@ -54,7 +52,6 @@ export default function Testimonials() {
               </motion.div>
             )}
 
-            {/* Condition Panel 2 */}
             {active === 1 && (
               <motion.div
                 key="t2"
@@ -86,7 +83,6 @@ export default function Testimonials() {
               </motion.div>
             )}
 
-            {/* Condition Panel 3 */}
             {active === 2 && (
               <motion.div
                 key="t3"

@@ -1,6 +1,5 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import { div } from "framer-motion/client";
 import React from "react";
 
 const MainLayout = ({children}) => {
