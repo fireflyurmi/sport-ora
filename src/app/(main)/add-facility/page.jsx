@@ -7,7 +7,8 @@ const AddFacilityPage = () => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    
+    const facility = Object.fromEntries(formData.entries());
+    console.log(facility);
   };
 
   return (
@@ -32,7 +33,7 @@ const AddFacilityPage = () => {
                 Facility Name
               </label>
               <input
-                name="facilityName"
+                name="name"
                 type="text"
                 required
                 placeholder="Scorion Nest Arena"
@@ -47,7 +48,7 @@ const AddFacilityPage = () => {
               </label>
               <div className="relative">
                 <select
-                  name="facilityType"
+                  name="facility_type"
                   required
                   defaultValue=""
                   className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none appearance-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500 text-slate-700 dark:text-slate-300"
@@ -98,7 +99,7 @@ const AddFacilityPage = () => {
                 Price Per Hour (USD)
               </label>
               <input
-                name="pricePerHour"
+                name="price_per_hour"
                 type="number"
                 required
                 placeholder="50"
@@ -134,30 +135,16 @@ const AddFacilityPage = () => {
               />
             </div>
 
-            {/* Available Time Slots */}
+            {/* Available Slots */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Available Time Slots
               </label>
               <input
-                name="timeSlots"
+                name="available_slots"
                 type="text"
                 required
                 placeholder="e.g. 06:00 PM - 10:00 PM"
-                className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
-              />
-            </div>
-
-            {/* Image URL */}
-            <div className="md:col-span-2 flex flex-col gap-2">
-              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Image URL (ImgBB / PostImage)
-              </label>
-              <input
-                name="imageUrl"
-                type="url"
-                required
-                placeholder="https://i.ibb.co/your-uploaded-turf.jpg"
                 className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
               />
             </div>
