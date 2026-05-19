@@ -21,7 +21,6 @@ const cardVariants = {
 export default function FeaturedFacilities() {
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Section Header */}
       <div className="mb-10">
         <h2 className="font-heading text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
           Featured Facilities
