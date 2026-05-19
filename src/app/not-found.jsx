@@ -29,8 +29,6 @@ export default function NotFound() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-slate-50 text-slate-900 dark:bg-[#080F1A] dark:text-slate-100 font-body transition-colors duration-300 px-4 overflow-hidden">
-      
-      {/* Central Card Block */}
       <motion.div
         className="text-center flex flex-col items-center z-10 max-w-xl w-full"
         variants={floatVariants}

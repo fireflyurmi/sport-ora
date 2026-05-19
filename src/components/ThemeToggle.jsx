@@ -1,18 +1,22 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useSyncExternalStore } from 'react';
 import { useTheme } from 'next-themes';
+
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 const ThemeToggle = () => {
   const { setTheme, resolvedTheme } = useTheme();
   
-  // Use a simple, clean check to verify if we are running in the browser
-  const isClient = typeof window !== 'undefined';
-  const isDark = isClient && resolvedTheme === 'dark';
+  const isMounted = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  const isDark = resolvedTheme === 'dark';
 
-  // We return a small, beautiful loading space matching the exact width during server rendering
-  if (!isClient) {
-    return <div className="w-16.5 h-8 rounded-full bg-slate-200 dark:bg-slate-800/50 animate-pulse shrink-0" />;
+  if (!isMounted) {
+    return (
+      <div className="w-16.5 h-8 rounded-full bg-slate-200 dark:bg-slate-800/50 animate-pulse shrink-0" />
+    );
   }
 
   return (
@@ -35,15 +39,14 @@ const ThemeToggle = () => {
           peer-checked:after:translate-x-8.5
           flex items-center justify-between px-2 text-[10px] font-bold uppercase tracking-wider text-slate-400"
         >
-          {/* Label Text states */}
-          <span className={`z-10 order-2 pl-0.5 transition-colors duration-200 ${!isDark ? 'text-slate-600' : 'text-transparent'}`}>
+          
+          <span className={`z-10 order-2 pl-1 transition-colors duration-200 ${!isDark ? 'text-slate-600' : 'text-transparent'}`}>
             Off
           </span>
-          <span className={`z-10 order-1 transition-colors duration-200 ${isDark ? 'text-white font-extrabold' : 'text-transparent'}`}>
+          <span className={`z-10 order-1 pr-1 transition-colors duration-200 ${isDark ? 'text-white font-extrabold' : 'text-transparent'}`}>
             On
           </span>
 
-          {/* Sync icon rotating animation inside the toggle knob */}
           <div className={`absolute top-1.75 left-2 w-4 h-4 transition-all duration-300 transform pointer-events-none z-20
             ${isDark ? 'translate-x-8.5 rotate-180 opacity-100 text-blue-600' : 'opacity-0 scale-50'}`}
           >
