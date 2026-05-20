@@ -2,7 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image"; 
+import Image from "next/image";
+import { usePathname } from "next/navigation"; // ← Added
 import ThemeToggle from "./ThemeToggle";
 import { authClient } from "@/lib/auth-client";
 
@@ -10,13 +11,16 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  const pathname = usePathname(); // ← Current route
   const { data: session, isPending } = authClient.useSession();
 
   const isLoggedIn = !!session?.user;
   const user = session?.user;
 
+  const defaultAvatar =
+    "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80";
+
   useEffect(() => {
-    console.log("Session Data:", session);
   }, [session]);
 
   const handleLogout = async () => {
@@ -25,10 +29,16 @@ const Navbar = () => {
     setIsOpen(false);
   };
 
+  const isActive = (path) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
+
   return (
     <nav className="w-full border-b transition-colors duration-300 bg-white border-slate-100 text-slate-800 dark:bg-[#0B1528] dark:border-slate-800/80 dark:text-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
+          {/* Logo */}
           <div className="flex items-center gap-2 shrink-0">
             <div className="w-10 h-10 rounded-full bg-linear-to-tr from-blue-600 to-cyan-500 flex items-center justify-center shadow-md">
               <span className="text-white font-black text-xl italic tracking-tighter">
@@ -40,40 +50,41 @@ const Navbar = () => {
             </span>
           </div>
 
-          {/* Desktop Links */}
+          {/* Desktop Navigation Links */}
           <div className="hidden lg:flex items-center gap-6 text-sm font-medium">
             <Link
               href="/"
-              className="text-blue-500 border-b-2 border-blue-500 py-1 px-1"
+              className={`py-1 px-1 transition-colors ${isActive("/") ? "text-blue-500 border-b-2 border-blue-500" : "text-slate-600 dark:text-slate-300 hover:text-blue-500"}`}
             >
               Home
             </Link>
             <Link
               href="/all-facilities"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-500 transition-colors"
+              className={`py-1 px-1 transition-colors ${isActive("/all-facilities") ? "text-blue-500 border-b-2 border-blue-500" : "text-slate-600 dark:text-slate-300 hover:text-blue-500"}`}
             >
               All Facilities
             </Link>
             <Link
               href="/my-bookings"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-500 transition-colors"
+              className={`py-1 px-1 transition-colors ${isActive("/my-bookings") ? "text-blue-500 border-b-2 border-blue-500" : "text-slate-600 dark:text-slate-300 hover:text-blue-500"}`}
             >
               My Bookings
             </Link>
             <Link
               href="/add-facility"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-500 transition-colors"
+              className={`py-1 px-1 transition-colors ${isActive("/add-facility") ? "text-blue-500 border-b-2 border-blue-500" : "text-slate-600 dark:text-slate-300 hover:text-blue-500"}`}
             >
               Add Facility
             </Link>
             <Link
               href="/manage-facilities"
-              className="text-slate-600 dark:text-slate-300 hover:text-blue-500 transition-colors"
+              className={`py-1 px-1 transition-colors ${isActive("/manage-facilities") ? "text-blue-500 border-b-2 border-blue-500" : "text-slate-600 dark:text-slate-300 hover:text-blue-500"}`}
             >
               Manage My Facilities
             </Link>
           </div>
 
+          {/* Desktop Right Side */}
           <div className="hidden lg:flex items-center gap-4">
             <ThemeToggle />
 
@@ -86,11 +97,11 @@ const Navbar = () => {
                   className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm transition-all border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
                 >
                   <Image
-                    src={user.image}
-                    alt={user.name || "User"}
-                    width={28}
-                    height={28}
-                    className="rounded-full object-cover"
+                    src={user.image || defaultAvatar}
+                    alt={user.name || "Profile"}
+                    width={32}
+                    height={32}
+                    className="rounded-full object-cover ring-2 ring-white dark:ring-slate-700"
                     unoptimized
                   />
                   <span className="font-medium text-xs max-w-20 truncate">
@@ -176,12 +187,13 @@ const Navbar = () => {
         </div>
       </div>
 
+      {/* Mobile Menu */}
       {isOpen && (
         <div className="lg:hidden border-t bg-white dark:bg-[#0B1528] border-slate-100 dark:border-slate-800 px-4 py-6 space-y-4">
           {isLoggedIn && user && (
             <div className="flex items-center gap-3 px-3 py-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl">
               <Image
-                src={user.image}
+                src={user.image || defaultAvatar}
                 alt={user.name || "User"}
                 width={48}
                 height={48}
@@ -201,14 +213,14 @@ const Navbar = () => {
 
           <Link
             href="/"
-            className="block px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-base"
+            className={`block px-3 py-2.5 rounded-lg ${isActive("/") ? "bg-blue-500 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
             onClick={() => setIsOpen(false)}
           >
             Home
           </Link>
           <Link
             href="/all-facilities"
-            className="block px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-base"
+            className={`block px-3 py-2.5 rounded-lg ${isActive("/all-facilities") ? "bg-blue-500 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
             onClick={() => setIsOpen(false)}
           >
             All Facilities
@@ -218,21 +230,21 @@ const Navbar = () => {
             <>
               <Link
                 href="/my-bookings"
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-base"
+                className={`block px-3 py-2.5 rounded-lg ${isActive("/my-bookings") ? "bg-blue-500 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                 onClick={() => setIsOpen(false)}
               >
                 My Bookings
               </Link>
               <Link
                 href="/add-facility"
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-base"
+                className={`block px-3 py-2.5 rounded-lg ${isActive("/add-facility") ? "bg-blue-500 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                 onClick={() => setIsOpen(false)}
               >
                 Add Facility
               </Link>
               <Link
                 href="/manage-facilities"
-                className="block px-3 py-2.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-base"
+                className={`block px-3 py-2.5 rounded-lg ${isActive("/manage-facilities") ? "bg-blue-500 text-white" : "hover:bg-slate-100 dark:hover:bg-slate-800"}`}
                 onClick={() => setIsOpen(false)}
               >
                 Manage My Facilities

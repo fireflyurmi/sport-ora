@@ -33,7 +33,6 @@ const SignUpPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // Extra safety check
     if (!name || !email || !photoUrl || !password) {
       toast.error("All fields are required!");
       return;
