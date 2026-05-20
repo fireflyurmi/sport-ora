@@ -20,8 +20,6 @@ const Navbar = () => {
   const defaultAvatar =
     "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80";
 
-  useEffect(() => {
-  }, [session]);
 
   const handleLogout = async () => {
     await authClient.signOut();

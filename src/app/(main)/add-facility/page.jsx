@@ -1,14 +1,34 @@
 "use client";
 
 import React from "react";
+import { authClient } from "@/lib/auth-client";
 
 const AddFacilityPage = () => {
+  const { data: session } = authClient.useSession();
+
   const onSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-    const facility = Object.fromEntries(formData.entries());
+    const formFields = Object.fromEntries(formData.entries());
+
+    const facility = {
+      ...formFields,
+      owner_email: session?.user?.email || "",
+      booking_count: 0,
+    };
+
     console.log(facility);
+
+    const res = await fetch("http://localhost:5000/facility", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(facility),
+    });
+    const data = await res.json();
+    console.log(data);
   };
 
   return (
