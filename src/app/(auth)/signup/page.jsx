@@ -33,6 +33,12 @@ const SignUpPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
+    // Extra safety check
+    if (!name || !email || !photoUrl || !password) {
+      toast.error("All fields are required!");
+      return;
+    }
+
     const validationError = validatePassword(password);
     if (validationError) {
       toast.error(validationError);
@@ -50,18 +56,14 @@ const SignUpPage = () => {
       });
 
       if (error) {
-        toast.error(
-          error.message || "Registration encountered an unexpected issue.",
-        );
+        toast.error(error.message || "Registration failed. Please try again.");
         return;
       }
 
-      toast.success("Account registered successfully! Redirecting to login...");
+      toast.success("Account created successfully! Redirecting to login...");
       router.push("/login");
     } catch (err) {
-      toast.error(
-        err.message || "Registration processing failed. Please try again.",
-      );
+      toast.error(err.message || "Something went wrong. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -74,7 +76,7 @@ const SignUpPage = () => {
         callbackURL: "/",
       });
     } catch (err) {
-      toast.error("Google authentication social provider failed.");
+      toast.error("Google sign up failed.");
     }
   };
 
@@ -93,7 +95,7 @@ const SignUpPage = () => {
         <form onSubmit={handleRegister} className="space-y-4">
           <div className="flex flex-col gap-1">
             <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-              Full Name
+              Full Name <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -107,7 +109,7 @@ const SignUpPage = () => {
 
           <div className="flex flex-col gap-1">
             <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-              Email Address
+              Email Address <span className="text-red-500">*</span>
             </label>
             <input
               type="email"
@@ -121,7 +123,7 @@ const SignUpPage = () => {
 
           <div className="flex flex-col gap-1">
             <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-              Photo URL
+              Photo URL <span className="text-red-500">*</span>
             </label>
             <input
               type="url"
@@ -135,7 +137,7 @@ const SignUpPage = () => {
 
           <div className="flex flex-col gap-1">
             <label className="text-[11px] font-bold uppercase tracking-wider text-slate-600 dark:text-slate-400">
-              Password
+              Password <span className="text-red-500">*</span>
             </label>
             <div className="relative w-full">
               <input
@@ -152,36 +154,27 @@ const SignUpPage = () => {
                 className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors focus:outline-none"
                 aria-label={showPassword ? "Hide password" : "Show password"}
               >
-                {showPassword ? (
-                  <HiEye className="w-5 h-5" />
-                ) : (
-                  <HiEyeOff className="w-5 h-5" />
-                )}
+                {showPassword ? <HiEye className="w-5 h-5" /> : <HiEyeOff className="w-5 h-5" />}
               </button>
             </div>
 
+            {/* Password Requirements */}
             <div className="mt-1.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800/50 space-y-1">
               <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">
                 Password must contain:
               </p>
               <div className="flex items-center gap-1.5 text-xs">
-                <span
-                  className={`transition-colors duration-200 ${satisfiesLength ? "text-emerald-500 font-bold" : "text-slate-400"}`}
-                >
+                <span className={`transition-colors duration-200 ${satisfiesLength ? "text-emerald-500 font-bold" : "text-slate-400"}`}>
                   {satisfiesLength ? "✓" : "•"} 6+ characters
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-xs">
-                <span
-                  className={`transition-colors duration-200 ${satisfiesUppercase ? "text-emerald-500 font-bold" : "text-slate-400"}`}
-                >
+                <span className={`transition-colors duration-200 ${satisfiesUppercase ? "text-emerald-500 font-bold" : "text-slate-400"}`}>
                   {satisfiesUppercase ? "✓" : "•"} One uppercase letter (A-Z)
                 </span>
               </div>
               <div className="flex items-center gap-1.5 text-xs">
-                <span
-                  className={`transition-colors duration-200 ${satisfiesLowercase ? "text-emerald-500 font-bold" : "text-slate-400"}`}
-                >
+                <span className={`transition-colors duration-200 ${satisfiesLowercase ? "text-emerald-500 font-bold" : "text-slate-400"}`}>
                   {satisfiesLowercase ? "✓" : "•"} One lowercase letter (a-z)
                 </span>
               </div>
@@ -215,10 +208,7 @@ const SignUpPage = () => {
 
         <p className="mt-6 text-center text-xs text-slate-500 dark:text-slate-400">
           Already have an account?{" "}
-          <Link
-            href="/login"
-            className="text-blue-500 hover:underline font-bold"
-          >
+          <Link href="/login" className="text-blue-500 hover:underline font-bold">
             Sign In here
           </Link>
         </p>
