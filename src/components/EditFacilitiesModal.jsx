@@ -23,12 +23,34 @@ const EditFacilitiesModal = ({ facility, onClose, onRefresh }) => {
     try {
       setUpdating(true);
 
+      // 1. Safely retrieve token from storage
+      const token = localStorage.getItem("token");
+
+      // 2. Prepare payload and explicitly ensure owner_email is included 
+      // so the backend middleware fallback path can identify you!
+      const payload = {
+        ...formData,
+        owner_email: facility?.owner_email || localStorage.getItem("user_email") || ""
+      };
+
+      // 3. Configure headers conditionally to protect against empty strings
+      const headers = {
+        "Content-Type": "application/json",
+      };
+
+      if (token && token !== "undefined" && token !== "null") {
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        // If local token storage is uninitialized, pass a placeholder to avoid empty-split failures
+        headers["Authorization"] = "Bearer dev-fallback-string";
+      }
+
       const res = await fetch(
         `http://localhost:5000/facility/${facility._id}`,
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formData),
+          headers: headers,
+          body: JSON.stringify(payload), // Send the updated payload with email context
         },
       );
 
@@ -40,7 +62,8 @@ const EditFacilitiesModal = ({ facility, onClose, onRefresh }) => {
         onRefresh();
         onClose();
       } else {
-        toast.error("Failed to update facility. Please try again.");
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.message || "Failed to update facility. Please try again.");
       }
     } catch (err) {
       console.error(err);

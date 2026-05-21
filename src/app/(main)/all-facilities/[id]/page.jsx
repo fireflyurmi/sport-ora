@@ -2,14 +2,22 @@ import React from "react";
 import Image from "next/image";
 import BookingCard from "@/components/BookingCard";
 import { FaLocationDot } from "react-icons/fa6";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
 const FacilityDetailsPage = async ({ params }) => {
   const { id } = await params;
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
 
   let facility = null;
   try {
     const res = await fetch(`http://localhost:5000/facility/${id}`, {
       cache: "no-store",
+      headers: {
+        authorization: `Bearer ${token}`,
+      },
     });
     if (res.ok) {
       facility = await res.json();
@@ -46,9 +54,7 @@ const FacilityDetailsPage = async ({ params }) => {
           <div className="lg:col-span-2 space-y-6 bg-white dark:bg-[#0D1527] p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-lg dark:shadow-2xl transition-colors duration-300">
             <div className="w-full h-64 sm:h-96 rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#080F1A] relative shadow-inner">
               <Image
-                src={
-                  facility?.image
-                }
+                src={facility?.image}
                 alt={facility?.name}
                 fill
                 sizes="(max-w-1024px) 100vw, 700px"

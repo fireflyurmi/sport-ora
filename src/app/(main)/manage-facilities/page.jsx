@@ -29,9 +29,15 @@ const ManageFacilitiesPage = () => {
 
       try {
         setLoading(true);
-        const res = await fetch(
-          `http://localhost:5000/facility?owner_email=${owner_email}`,
-        );
+        
+        const token = localStorage.getItem("token") || session?.token;
+        
+        const res = await fetch(`http://localhost:5000/facility`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          }
+        });
 
         if (res.ok) {
           const data = await res.json();
@@ -48,7 +54,7 @@ const ManageFacilitiesPage = () => {
     };
 
     loadFacilities();
-  }, [owner_email]);
+  }, [owner_email, session]);
 
   const openEditModal = (facility) => {
     setActiveFacility(facility);

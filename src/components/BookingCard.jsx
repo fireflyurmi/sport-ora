@@ -30,12 +30,16 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
       status: "pending",
       userEmail: session?.user?.email || "",
     };
-
+    const {data:tokenData} = await authClient.token();
+    console.log(tokenData);
     try {
       setIsSubmitting(true);
       const response = await fetch("http://localhost:5000/bookings", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`
+         },
         body: JSON.stringify(bookingPayload),
       });
 

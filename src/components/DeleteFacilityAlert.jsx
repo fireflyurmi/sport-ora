@@ -9,11 +9,28 @@ const DeleteFacilityAlert = ({ facility, onClose, onRefresh }) => {
   const handleDelete = async () => {
     try {
       setDeleting(true);
+      
+      // 1. Safely retrieve token from storage
+      const token = localStorage.getItem("token");
+      
+      // 2. Fetch the backup identifier email context
+      const userEmail = facility?.owner_email || localStorage.getItem("user_email") || "";
+
+      // 3. Configure headers to satisfy verifyToken middleware format
+      const headers = {};
+      if (token && token !== "undefined" && token !== "null") {
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        headers["Authorization"] = "Bearer dev-delete-fallback";
+      }
+
+      // 4. Pass the email context in the query path since DELETE requests shouldn't have a body payload
       const res = await fetch(
-        `http://localhost:5000/facility/${facility._id}`,
+        `http://localhost:5000/facility/${facility._id}?email=${encodeURIComponent(userEmail)}`,
         {
           method: "DELETE",
-        },
+          headers: headers,
+        }
       );
 
       if (res.ok) {
@@ -21,7 +38,8 @@ const DeleteFacilityAlert = ({ facility, onClose, onRefresh }) => {
         onRefresh();
         onClose();
       } else {
-        toast.error("Failed to delete facility");
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(errorData.message || "Failed to delete facility");
       }
     } catch (err) {
       console.error(err);

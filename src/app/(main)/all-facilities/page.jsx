@@ -25,15 +25,25 @@ const AllFacilitiesPage = () => {
       try {
         const params = new URLSearchParams();
         if (searchQuery) params.append("search", searchQuery);
+        
+        // Appends key parameter exactly as required by the public route filter query
         if (selectedSport) params.append("sportType", selectedSport);
 
         const res = await fetch(
           `http://localhost:5000/facility?${params.toString()}`,
         );
         const data = await res.json();
-        setFacilities(data);
+        
+        // Safety verification check
+        if (Array.isArray(data)) {
+          setFacilities(data);
+        } else {
+          console.warn("Expected an array from /facility but received:", data);
+          setFacilities([]); 
+        }
       } catch (error) {
         console.error("Error fetching facilities:", error);
+        setFacilities([]);
       } finally {
         setIsDataLoading(false);
       }
@@ -205,3 +215,4 @@ const AllFacilitiesPage = () => {
 };
 
 export default AllFacilitiesPage;
+export const dynamic = 'force-dynamic';

@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation"; // Imported Next.js router
+import { useRouter } from "next/navigation";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
 const AddFacilityPage = () => {
   const { data: session } = authClient.useSession();
-  const router = useRouter(); // Initialized the router hook
+  const router = useRouter();
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -16,32 +16,39 @@ const AddFacilityPage = () => {
     const formData = new FormData(form);
     const formFields = Object.fromEntries(formData.entries());
 
+    // Safely structure payload data and cast required fields to numeric values
     const facility = {
       ...formFields,
+      price_per_hour: Number(formFields.price_per_hour),
+      capacity: Number(formFields.capacity),
       owner_email: session?.user?.email || "",
       booking_count: 0,
     };
 
     try {
+      // Fallback matrix to grab the active token context cleanly
+      const token = localStorage.getItem("token") || session?.token || session?.accessToken;
+
       const res = await fetch("http://localhost:5000/facility", {
         method: "POST",
         headers: {
           "content-type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify(facility),
       });
 
       const data = await res.json();
 
-      if (data.insertedId || res.ok) {
+      if (data.insertedId || data.acknowledged || res.ok) {
         toast.success("Facility added successfully!");
         form.reset();
-        router.push("/manage-facilities"); 
+        router.push("/manage-facilities");
       } else {
-        toast.error("Failed to add facility. Please try again.");
+        toast.error(data.message || "Failed to add facility. Please try again.");
       }
     } catch (error) {
-      console.error(error);
+      console.error("Submission Error:", error);
       toast.error("An error occurred. Please check your connection.");
     }
   };

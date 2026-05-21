@@ -15,7 +15,14 @@ const MyBookingsPage = () => {
   const fetchBookings = useCallback(async (email) => {
     if (!email) return;
     try {
-      const res = await fetch(`http://localhost:5000/bookings/${email}`);
+      const token = localStorage.getItem("token") || session?.token;
+
+      const res = await fetch(`http://localhost:5000/bookings/${email}`, {
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      });
       if (res.ok) {
         const data = await res.json();
         setBookings(data);
@@ -25,7 +32,7 @@ const MyBookingsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [session]);
 
   if (!isPending && userEmail && lastFetchedEmail !== userEmail) {
     setLastFetchedEmail(userEmail);
@@ -61,7 +68,7 @@ const MyBookingsPage = () => {
           </div>
         ) : (
           <>
-            {/* MOBILE LAYOUT: Stacked Cards (Visible only on mobile/tablet) */}
+            {/* MOBILE LAYOUT */}
             <div className="block md:hidden space-y-4">
               {bookings.map((booking) => (
                 <div 
@@ -105,7 +112,7 @@ const MyBookingsPage = () => {
               ))}
             </div>
 
-            {/* DESKTOP LAYOUT: Traditional Table (Visible only on md screens and up) */}
+            {/* DESKTOP LAYOUT */}
             <div className="hidden md:block w-full overflow-hidden rounded-3xl border border-slate-100 bg-white shadow-xl dark:border-slate-800/80 dark:bg-[#0D1527]">
               <div className="overflow-x-auto">
                 <table className="w-full text-left border-collapse">

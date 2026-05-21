@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🏆 SportOra
 
-## Getting Started
+> A premium, responsive sports venue and facility booking platform designed to streamline reservation tracking, venue scheduling, and facility management.
 
-First, run the development server:
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://your-live-link.com) 
+*(Replace the link above with your deployed Live URL)*
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📌 Project Purpose
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+**SportOra** is built to bridge the gap between sports enthusiasts and facility owners. It provides a seamless user experience for discovering premium sports venues, reserving playing slots, and managing custom facilities. By offering a dynamic dashboard with real-time data filtering, structural consistency, and role-specific account management, SportOra takes the hassle out of coordination so players can focus on the game.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🚀 Core Features
 
-To learn more about Next.js, take a look at the following resources:
+### 🔐 Multi-Tiered User Authentication & Middleware Fallbacks
+* Secure token-based access handling client identities via remote JWKS verification.
+* Robust development fallback route protections checking and filtering administrative contexts flawlessly.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 📅 Seamless Booking Workflow & User Metrics
+* Interactive reservation system with dynamic slot allocations.
+* Auto-incrementing counters to track and update individual user booking metrics instantly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 💼 Personalized "Manage My Facilities" Dashboard
+* Context-aware data isolation: Users can view, search, edit, or delete **only** the specific facilities they created.
+* Integrated responsive modals to update price structures, hourly rates, and player capacities seamlessly.
 
-## Deploy on Vercel
+### 🔍 Advanced Search & Dynamic Multi-Filtering
+* Real-time query filtering using partial matching MongoDB operators.
+* Search functionality utilizing `$regex` and `$options: "i"` for flexible case-insensitive text matching by name or location.
+* Category filtering utilizing array-based operations to filter locations by athletic classifications (e.g., Football Turf, Badminton Court, Swim Center).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 🎨 Responsive Modern UI/UX Layout
+* Styled using **HeroUI** component design structures for fluid transitions and structural uniformity.
+* Fully adaptive layout supporting responsive containers across all device viewports.
+* Elegant dark/light color treatments emphasizing structural clarity and scannability.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### Frontend Dependencies (`/client`)
+* **`react`** & **`react-dom`** - Core application framework layers.
+* **`next`** - Server-side rendering and client routing architecture.
+* **`@heroui/react`** - Premium React component library for uniform, modern UI layout.
+* **`tailwindcss`** - Utility-first styling framework for complete custom responsive responsiveness.
+* **`sweetalert2`** - Beautiful, accessible, and customizable popup dialog notifications for secure user deletion confirmation alerts.
+* **`react-toastify`** - Non-blocking clean toast notifications for real-time form submission updates.
+* **`react-icons`** - Clean, modern vector icon iconography.
+* **`framer-motion`** - Clean, modern animation.
+
+---
+
+### Backend Dependencies (`/server`)
+* **`express`** - Minimalist web framework for handling API routing logic.
+* **`mongodb`** - Official MongoDB driver for cluster execution, aggregation, and raw collection mapping.
+* **`jose-cjs`** - Advanced JSON Web Token (JWT) handling, state decoding, and signature validation.
+* **`dotenv`** - Secure isolation of database keys and environmental parameters.
+* **`cors`** - Cross-Origin Resource Sharing handling mechanisms for smooth front-to-back connectivity.
+
+---
+
+## 🛠️ Local Installation & Setup
+
+Follow these quick steps to launch the repository infrastructure on your machine:
+
+1. **Clone the repository:**
+   ```bash
+   git clone [https://github.com/fireflyurmi/sport-ora.git](https://github.com/fireflyurmi/sport-ora.git)
+   cd sportora

@@ -17,10 +17,17 @@ export default function FeaturedFacilities() {
         const res = await fetch("http://localhost:5000/facility");
         const data = await res.json();
 
-        // Take a minimum/slice of 6 items for the featured grid section
-        setFacilities(data.slice(0, 6));
+        // Safe Check: Verify data is actually an array before slicing
+        if (Array.isArray(data)) {
+          // Take a minimum/slice of 6 items for the featured grid section
+          setFacilities(data.slice(0, 6));
+        } else {
+          console.warn("Expected an array from /facility but received:", data);
+          setFacilities([]);
+        }
       } catch (error) {
         console.error("Error fetching featured facilities:", error);
+        setFacilities([]);
       } finally {
         setIsLoading(false);
       }
