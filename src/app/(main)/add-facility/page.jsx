@@ -1,11 +1,13 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation"; // Imported Next.js router
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 
 const AddFacilityPage = () => {
   const { data: session } = authClient.useSession();
+  const router = useRouter(); // Initialized the router hook
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -34,6 +36,7 @@ const AddFacilityPage = () => {
       if (data.insertedId || res.ok) {
         toast.success("Facility added successfully!");
         form.reset();
+        router.push("/manage-facilities"); 
       } else {
         toast.error("Failed to add facility. Please try again.");
       }

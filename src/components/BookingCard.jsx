@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 import Swal from "sweetalert2";
 
 const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
   const router = useRouter();
+  const { data: session } = authClient.useSession();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [bookingDate, setBookingDate] = useState("");
@@ -26,6 +28,7 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
       hours: Number(bookingHours),
       totalPrice: totalPrice,
       status: "pending",
+      userEmail: session?.user?.email || "",
     };
 
     try {
@@ -43,18 +46,13 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
           text: "Your reservation is pending confirmation.",
           timer: 2000,
           showConfirmButton: false,
-          background: document.documentElement.classList.contains("dark")
-            ? "#0D1527"
-            : "#ffffff",
-          color: document.documentElement.classList.contains("dark")
-            ? "#ffffff"
-            : "#1e293b",
+          background: document.documentElement.classList.contains("dark") ? "#0D1527" : "#ffffff",
+          color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#1e293b",
           customClass: {
-            popup:
-              "rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl",
+            popup: "rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl",
           },
         });
-        router.push("/dashboard/my-bookings");
+        router.push("/my-bookings");
       } else {
         throw new Error("Submission rejected.");
       }
@@ -64,15 +62,10 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
         icon: "error",
         title: "Submission Error",
         text: "Could not dispatch reservation properties.",
-        background: document.documentElement.classList.contains("dark")
-          ? "#0D1527"
-          : "#ffffff",
-        color: document.documentElement.classList.contains("dark")
-          ? "#ffffff"
-          : "#1e293b",
+        background: document.documentElement.classList.contains("dark") ? "#0D1527" : "#ffffff",
+        color: document.documentElement.classList.contains("dark") ? "#ffffff" : "#1e293b",
         customClass: {
-          popup:
-            "rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl",
+          popup: "rounded-3xl border border-slate-200 dark:border-slate-800 shadow-xl",
         },
       });
     } finally {
@@ -86,14 +79,10 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
         Let&apos;s Book
       </h2>
 
-      <form
-        onSubmit={handleBookingSubmit}
-        className="space-y-4 text-slate-700 dark:text-slate-200"
-      >
-        {/* Facility Name */}
+      <form onSubmit={handleBookingSubmit} className="space-y-4 text-slate-700 dark:text-slate-200">
         <div>
           <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
-          Facility Name
+            Facility Name
           </label>
           <input
             type="text"
@@ -103,7 +92,6 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
           />
         </div>
 
-        {/* Booking Date */}
         <div>
           <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
             Booking Date
@@ -118,7 +106,6 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
           />
         </div>
 
-        {/* Time Slot */}
         <div>
           <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
             Time Slot
@@ -129,49 +116,16 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
             onChange={(e) => setTimeSlot(e.target.value)}
             className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-[#080F1A] text-sm outline-none border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 text-slate-700 dark:text-slate-300 transition-colors duration-300"
           >
-            <option value="" className="bg-white dark:bg-[#0D1527]">
-              Select a time slot
-            </option>
-            <option
-              value="08:00 AM - 10:00 AM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              08:00 AM - 10:00 AM
-            </option>
-            <option
-              value="10:00 AM - 12:00 PM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              10:00 AM - 12:00 PM
-            </option>
-            <option
-              value="12:00 PM - 02:00 PM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              12:00 PM - 02:00 PM
-            </option>
-            <option
-              value="02:00 PM - 04:00 PM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              02:00 PM - 04:00 PM
-            </option>
-            <option
-              value="04:00 PM - 06:00 PM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              04:00 PM - 06:00 PM
-            </option>
-            <option
-              value="06:00 PM - 08:00 PM"
-              className="bg-white dark:bg-[#0D1527]"
-            >
-              06:00 PM - 08:00 PM
-            </option>
+            <option value="" className="bg-white dark:bg-[#0D1527]">Select a time slot</option>
+            <option value="08:00 AM - 10:00 AM" className="bg-white dark:bg-[#0D1527]">08:00 AM - 10:00 AM</option>
+            <option value="10:00 AM - 12:00 PM" className="bg-white dark:bg-[#0D1527]">10:00 AM - 12:00 PM</option>
+            <option value="12:00 PM - 02:00 PM" className="bg-white dark:bg-[#0D1527]">12:00 PM - 02:00 PM</option>
+            <option value="02:00 PM - 04:00 PM" className="bg-white dark:bg-[#0D1527]">02:00 PM - 04:00 PM</option>
+            <option value="04:00 PM - 06:00 PM" className="bg-white dark:bg-[#0D1527]">04:00 PM - 06:00 PM</option>
+            <option value="06:00 PM - 08:00 PM" className="bg-white dark:bg-[#0D1527]">06:00 PM - 08:00 PM</option>
           </select>
         </div>
 
-        {/* Booking Hours */}
         <div>
           <label className="block text-xs font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider mb-2">
             Hours
@@ -181,37 +135,26 @@ const BookingCard = ({ facilityId, facilityName, pricePerHour }) => {
             min="1"
             required
             value={bookingHours}
-            onChange={(e) =>
-              setBookingHours(Math.max(1, parseInt(e.target.value) || 1))
-            }
+            onChange={(e) => setBookingHours(Math.max(1, parseInt(e.target.value) || 1))}
             className="w-full px-4 py-2.5 rounded-xl border bg-white dark:bg-[#080F1A] text-sm text-slate-800 dark:text-white outline-none border-slate-200 dark:border-slate-800 focus:border-blue-500 dark:focus:border-blue-500 transition-colors duration-300"
           />
         </div>
 
-        {/* Price */}
         <div className="pt-4 mt-6 border-t border-slate-100 dark:border-slate-800/60 space-y-2">
           <div className="flex items-center justify-between text-sm">
-            <span className="font-bold text-slate-400 dark:text-slate-500">
-              Rate
-            </span>
-            <span className="font-semibold text-slate-600 dark:text-slate-300">
-              ${hourlyRate}/hr
-            </span>
+            <span className="font-bold text-slate-400 dark:text-slate-500">Rate</span>
+            <span className="font-semibold text-slate-600 dark:text-slate-300">${hourlyRate}/hr</span>
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">
-              Total Price
-            </span>
-            <span className="text-2xl font-black text-blue-600 dark:text-blue-400">
-              ${totalPrice.toFixed(2)}
-            </span>
+            <span className="text-sm font-bold text-slate-500 dark:text-slate-400">Total Price</span>
+            <span className="text-2xl font-black text-blue-600 dark:text-blue-400">${totalPrice.toFixed(2)}</span>
           </div>
         </div>
 
         <button
           type="submit"
           disabled={isSubmitting}
-          className="w-full mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-50"
+          className="w-full mt-4 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-xl shadow-md transition-all active:scale-[0.98] disabled:opacity-50"
         >
           {isSubmitting ? "Processing..." : "Confirm Booking"}
         </button>
