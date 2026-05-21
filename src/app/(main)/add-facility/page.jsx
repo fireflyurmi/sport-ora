@@ -2,14 +2,16 @@
 
 import React from "react";
 import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
 
 const AddFacilityPage = () => {
   const { data: session } = authClient.useSession();
 
   const onSubmit = async (e) => {
     e.preventDefault();
+    const form = e.currentTarget;
 
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const formFields = Object.fromEntries(formData.entries());
 
     const facility = {
@@ -18,17 +20,27 @@ const AddFacilityPage = () => {
       booking_count: 0,
     };
 
-    console.log(facility);
+    try {
+      const res = await fetch("http://localhost:5000/facility", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(facility),
+      });
 
-    const res = await fetch("http://localhost:5000/facility", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-      },
-      body: JSON.stringify(facility),
-    });
-    const data = await res.json();
-    console.log(data);
+      const data = await res.json();
+
+      if (data.insertedId || res.ok) {
+        toast.success("Facility added successfully!");
+        form.reset();
+      } else {
+        toast.error("Failed to add facility. Please try again.");
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("An error occurred. Please check your connection.");
+    }
   };
 
   return (
@@ -44,19 +56,18 @@ const AddFacilityPage = () => {
           <div className="mt-3 h-1 w-12 rounded-full bg-blue-600" />
         </div>
 
-        {/* Requirements Form */}
         <form onSubmit={onSubmit} className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Facility Name */}
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Facility Name
+                Facility Name <span className="text-red-500">*</span>
               </label>
               <input
                 name="name"
                 type="text"
                 required
-                placeholder="Scorion Nest Arena"
+                placeholder="Enter facility name"
                 className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
               />
             </div>
@@ -64,7 +75,7 @@ const AddFacilityPage = () => {
             {/* Facility Type (Select Dropdown) */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Facility Type
+                Facility Type <span className="text-red-500">*</span>
               </label>
               <div className="relative">
                 <select
@@ -79,11 +90,14 @@ const AddFacilityPage = () => {
                   <option value="Football Turf" className="dark:bg-[#0D1527]">
                     Football Turf
                   </option>
-                  <option value="Cricket Arena" className="dark:bg-[#0D1527]">
-                    Cricket Arena
-                  </option>
                   <option value="Badminton Court" className="dark:bg-[#0D1527]">
                     Badminton Court
+                  </option>
+                  <option value="Swim Center" className="dark:bg-[#0D1527]">
+                    Swim Center
+                  </option>
+                  <option value="Tennis Court" className="dark:bg-[#0D1527]">
+                    Tennis Court
                   </option>
                   <option
                     value="Basketball Court"
@@ -91,8 +105,8 @@ const AddFacilityPage = () => {
                   >
                     Basketball Court
                   </option>
-                  <option value="Tennis Turf" className="dark:bg-[#0D1527]">
-                    Tennis Turf
+                  <option value="Cricket Net" className="dark:bg-[#0D1527]">
+                    Cricket Net
                   </option>
                 </select>
                 <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
@@ -116,7 +130,7 @@ const AddFacilityPage = () => {
             {/* Price Per Hour */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Price Per Hour (USD)
+                Price Per Hour (USD) <span className="text-red-500">*</span>
               </label>
               <input
                 name="price_per_hour"
@@ -127,16 +141,30 @@ const AddFacilityPage = () => {
               />
             </div>
 
+            {/* Image Upload Field */}
+            <div className="md:col-span-2 flex flex-col gap-2">
+              <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                Facility Image URL <span className="text-red-500">*</span>
+              </label>
+              <input
+                name="image"
+                type="url"
+                required
+                placeholder="Enter image URL"
+                className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
+              />
+            </div>
+
             {/* Location */}
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Location / Full Address
+                Location / Full Address <span className="text-red-500">*</span>
               </label>
               <input
                 name="location"
                 type="text"
                 required
-                placeholder="Block-E, Bashundhara R/A, Dhaka"
+                placeholder="Enter Address"
                 className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
               />
             </div>
@@ -144,13 +172,13 @@ const AddFacilityPage = () => {
             {/* Capacity */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Max Capacity (Players)
+                Max Capacity (Players) <span className="text-red-500">*</span>
               </label>
               <input
                 name="capacity"
                 type="number"
                 required
-                placeholder="14"
+                placeholder="e.g. 14"
                 className="w-full px-4 py-3 rounded-2xl border bg-transparent text-sm transition-all outline-none border-slate-200 focus:border-blue-500 dark:border-slate-800 dark:focus:border-blue-500"
               />
             </div>
@@ -158,7 +186,7 @@ const AddFacilityPage = () => {
             {/* Available Slots */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Available Time Slots
+                Available Time Slots <span className="text-red-500">*</span>
               </label>
               <input
                 name="available_slots"
@@ -172,7 +200,7 @@ const AddFacilityPage = () => {
             {/* Description */}
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                Facility Description
+                Facility Description <span className="text-red-500">*</span>
               </label>
               <textarea
                 name="description"
@@ -184,7 +212,6 @@ const AddFacilityPage = () => {
             </div>
           </div>
 
-          {/* Submit Action Block */}
           <div className="pt-4">
             <button
               type="submit"
