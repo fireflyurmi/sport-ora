@@ -2,10 +2,9 @@
 
 > A premium, responsive sports venue and facility booking platform designed to streamline reservation tracking, venue scheduling, and facility management.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=google-chrome&logoColor=white)]([https://your-live-link.com](https://sportora-peach.vercel.app/)) 
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://sportora-peach.vercel.app) 
 
 ---
-
 ## 📌 Project Purpose
 
 **SportOra** is built to bridge the gap between sports enthusiasts and facility owners. It provides a seamless user experience for discovering premium sports venues, reserving playing slots, and managing custom facilities. By offering a dynamic dashboard with real-time data filtering, structural consistency, and role-specific account management, SportOra takes the hassle out of coordination so players can focus on the game.
