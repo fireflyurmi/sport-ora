@@ -2,8 +2,7 @@
 
 > A premium, responsive sports venue and facility booking platform designed to streamline reservation tracking, venue scheduling, and facility management.
 
-[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=google-chrome&logoColor=white)](https://your-live-link.com) 
-*(Replace the link above with your deployed Live URL)*
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=google-chrome&logoColor=white)]([https://your-live-link.com](https://sportora-peach.vercel.app/)) 
 
 ---
 
