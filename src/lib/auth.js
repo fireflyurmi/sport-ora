@@ -4,7 +4,10 @@ import { mongodbAdapter } from "better-auth/adapters/mongodb";
 import { nextCookies } from "better-auth/next-js";
 import { jwt } from "better-auth/plugins";
 
-const client = new MongoClient(process.env.MONGODB_URI, {
+
+const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/sportora";
+
+const client = new MongoClient(mongoUri, {
   serverApi: {
     version: "1",
     strict: true,
@@ -17,20 +20,20 @@ export const auth = betterAuth({
 
   secret: process.env.BETTER_AUTH_SECRET,
 
-  plugins: [nextCookies()],
+  baseURL: process.env.BETTER_AUTH_URL || "https://sportora-peach.vercel.app",
 
   emailAndPassword: {
     enabled: true,
     requireEmailVerification: false,
   },
 
-  baseURL: process.env.BETTER_AUTH_URL,
   socialProviders: {
     google: {
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     },
   },
+  
   session: {
     cookieCache: {
       enabled: true,
@@ -39,5 +42,6 @@ export const auth = betterAuth({
       maxAge: 7 * 24 * 60 * 60,
     },
   },
-  plugins: [jwt()],
+
+  plugins: [nextCookies(), jwt()],
 });

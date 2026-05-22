@@ -14,12 +14,11 @@ export default function FeaturedFacilities() {
     const fetchFeaturedFacilities = async () => {
       try {
         setIsLoading(true);
-        const res = await fetch("http://localhost:5000/facility");
+        const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/facility`);
         const data = await res.json();
 
-        // Safe Check: Verify data is actually an array before slicing
+        
         if (Array.isArray(data)) {
-          // Take a minimum/slice of 6 items for the featured grid section
           setFacilities(data.slice(0, 6));
         } else {
           console.warn("Expected an array from /facility but received:", data);
@@ -38,7 +37,6 @@ export default function FeaturedFacilities() {
 
   return (
     <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6 lg:px-8">
-      {/* Section Header */}
       <div className="mb-10">
         <h2 className="font-heading text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
           Featured Facilities
@@ -69,14 +67,13 @@ export default function FeaturedFacilities() {
           </p>
         </div>
       ) : (
-        /* Dynamic Grid Layout */
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 lg:grid-cols-3">
           {facilities.map((facility) => (
             <div
               key={facility._id}
               className="group flex flex-col justify-between overflow-hidden rounded-2xl border border-slate-100 bg-white shadow-sm dark:border-slate-800/60 dark:bg-[#0F1C34] transition-all duration-300 hover:-translate-y-1.5"
             >
-              {/* Card Header Media */}
+              {/* Card Header */}
               <div>
                 <div className="relative h-48 w-full overflow-hidden bg-slate-100 dark:bg-slate-800">
                   <Image
@@ -103,13 +100,13 @@ export default function FeaturedFacilities() {
                     {facility.name}
                   </h3>
 
-                  {/* Location Segment */}
+                  {/* Location */}
                   <div className="flex items-center gap-1 mt-1.5 text-slate-500 dark:text-slate-400">
                     <FiMapPin className="w-3.5 h-3.5 text-blue-500 shrink-0" />
                     <p className="text-xs truncate">{facility.location}</p>
                   </div>
 
-                  {/* Short Description snippet */}
+                  {/* Short Description */}
                   {facility.description && (
                     <p className="mt-3 text-xs text-slate-500 dark:text-slate-400 line-clamp-2 leading-relaxed">
                       {facility.description}
@@ -118,7 +115,6 @@ export default function FeaturedFacilities() {
                 </div>
               </div>
 
-              {/* Action and Pricing Footer (Pinned perfectly to bottom) */}
               <div className="px-5 pb-5">
                 <div className="mt-2 flex items-center justify-between border-t border-slate-50 pt-4 dark:border-slate-800/60">
                   <div>

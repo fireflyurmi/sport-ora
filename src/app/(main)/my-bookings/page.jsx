@@ -17,7 +17,7 @@ const MyBookingsPage = () => {
     try {
       const token = localStorage.getItem("token") || session?.token;
 
-      const res = await fetch(`http://localhost:5000/bookings/${email}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/bookings/${email}`, {
         headers: {
           "Authorization": `Bearer ${token}`,
           "Content-Type": "application/json"

@@ -29,19 +29,25 @@ const ManageFacilitiesPage = () => {
 
       try {
         setLoading(true);
-        
+
         const token = localStorage.getItem("token") || session?.token;
-        
-        const res = await fetch(`http://localhost:5000/facility`, {
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          }
-        });
+
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_SERVER_URI}/facility`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          },
+        );
 
         if (res.ok) {
           const data = await res.json();
-          setFacilities(data);
+          const myFacilities = data.filter(
+            (f) => f.owner_email === owner_email,
+          );
+          setFacilities(myFacilities);
         } else {
           toast.error("Failed to load your facilities");
         }

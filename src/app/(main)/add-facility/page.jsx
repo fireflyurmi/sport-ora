@@ -16,7 +16,6 @@ const AddFacilityPage = () => {
     const formData = new FormData(form);
     const formFields = Object.fromEntries(formData.entries());
 
-    // Safely structure payload data and cast required fields to numeric values
     const facility = {
       ...formFields,
       price_per_hour: Number(formFields.price_per_hour),
@@ -26,10 +25,9 @@ const AddFacilityPage = () => {
     };
 
     try {
-      // Fallback matrix to grab the active token context cleanly
       const token = localStorage.getItem("token") || session?.token || session?.accessToken;
 
-      const res = await fetch("http://localhost:5000/facility", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/facility`, {
         method: "POST",
         headers: {
           "content-type": "application/json",
@@ -82,7 +80,7 @@ const AddFacilityPage = () => {
               />
             </div>
 
-            {/* Facility Type (Select Dropdown) */}
+            {/* Facility Type */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Facility Type <span className="text-red-500">*</span>
@@ -137,7 +135,7 @@ const AddFacilityPage = () => {
               </div>
             </div>
 
-            {/* Price Per Hour */}
+            {/* Price */}
             <div className="flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Price Per Hour (USD) <span className="text-red-500">*</span>
@@ -151,7 +149,7 @@ const AddFacilityPage = () => {
               />
             </div>
 
-            {/* Image Upload Field */}
+            {/* Image */}
             <div className="md:col-span-2 flex flex-col gap-2">
               <label className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                 Facility Image URL <span className="text-red-500">*</span>

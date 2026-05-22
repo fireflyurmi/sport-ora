@@ -13,7 +13,7 @@ const FacilityDetailsPage = async ({ params }) => {
 
   let facility = null;
   try {
-    const res = await fetch(`http://localhost:5000/facility/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URI}/facility/${id}`, {
       cache: "no-store",
       headers: {
         authorization: `Bearer ${token}`,
@@ -41,7 +41,6 @@ const FacilityDetailsPage = async ({ params }) => {
   return (
     <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8 bg-[#F4F7FC] dark:bg-[#080F1A] text-slate-800 dark:text-slate-100 transition-colors duration-300">
       <div className="max-w-6xl mx-auto">
-        {/* Responsive Header Banner Title */}
         <div className="mb-8">
           <h1 className="text-3xl font-black tracking-tight text-slate-900 dark:text-white sm:text-4xl">
             Facility Details & Booking
@@ -50,7 +49,7 @@ const FacilityDetailsPage = async ({ params }) => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-          {/* Main Info Frame */}
+          {/* Main Info */}
           <div className="lg:col-span-2 space-y-6 bg-white dark:bg-[#0D1527] p-6 sm:p-8 rounded-3xl border border-slate-100 dark:border-slate-800/80 shadow-lg dark:shadow-2xl transition-colors duration-300">
             <div className="w-full h-64 sm:h-96 rounded-2xl overflow-hidden bg-slate-100 dark:bg-[#080F1A] relative shadow-inner">
               <Image

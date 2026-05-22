@@ -26,15 +26,13 @@ const AllFacilitiesPage = () => {
         const params = new URLSearchParams();
         if (searchQuery) params.append("search", searchQuery);
         
-        // Appends key parameter exactly as required by the public route filter query
         if (selectedSport) params.append("sportType", selectedSport);
 
         const res = await fetch(
-          `http://localhost:5000/facility?${params.toString()}`,
+          `${process.env.NEXT_PUBLIC_SERVER_URI}/facility?${params.toString()}`,
         );
         const data = await res.json();
         
-        // Safety verification check
         if (Array.isArray(data)) {
           setFacilities(data);
         } else {
